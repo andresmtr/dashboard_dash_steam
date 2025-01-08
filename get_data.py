@@ -2,13 +2,20 @@ import requests
 import pandas as pd
 from datetime import datetime
 
+# Leer token de Steam desde archivo Excel
 token_steam = pd.read_excel('/Users/andresmauriciotrianareina/Documents/Desarrollos/token_steam.xlsx')
 
+# Validar que las columnas existan en el archivo Excel
+if 'token' not in token_steam.columns or 'is_user' not in token_steam.columns:
+    raise ValueError("El archivo Excel debe contener las columnas 'token' y 'is_user'.")
 
+# Obtener los valores y convertirlos a string
+API_KEY = str(token_steam['token'].iloc[0])  # Usar iloc para mayor claridad
+STEAM_ID = str(token_steam['is_user'].iloc[0])  # Usar iloc para mayor claridad
 
-# Configuración
-API_KEY = "YOUR_API_KEY"  # Reemplaza con tu clave API de Steam
-STEAM_ID = "YOUR_STEAM_ID"  # Reemplaza con tu Steam ID (64-bit)
+# Imprimir los valores para verificar
+print(f"API_KEY: {API_KEY}")
+print(f"STEAM_ID: {STEAM_ID}")
 
 # Función para obtener la lista de juegos y horas jugadas
 def obtener_juegos(api_key, steam_id):
@@ -80,10 +87,10 @@ df_juegos = pd.DataFrame(datos_juegos)
 df_juegos.to_csv('data_steam.csv', index=False)
 
 # Calcular estadísticas clave
-numero_juegos = len(df_juegos)
-total_horas = df_juegos["Horas Totales"].sum()
-total_logros = df_juegos["Logros Desbloqueados"].sum()
+# numero_juegos = len(df_juegos)
+# total_horas = df_juegos["Horas Totales"].sum()
+# total_logros = df_juegos["Logros Desbloqueados"].sum()
 
-print(f"Número de Juegos: {numero_juegos}")
-print(f"Total de Horas Jugadas: {total_horas}")
-print(f"Total de Logros Desbloqueados: {total_logros}")
+# print(f"Número de Juegos: {numero_juegos}")
+# print(f"Total de Horas Jugadas: {total_horas}")
+# print(f"Total de Logros Desbloqueados: {total_logros}")
